@@ -223,42 +223,55 @@ def start_push(update: Update, _: CallbackContext) -> str:
     return THIRD
 
 
-def setear_referenceSet(update: Update, _: CallbackContext):
+def setear_referenceSet(update: Update, _: CallbackContext) -> str:
     query = update.callback_query
     global tipo
     global refset
     tipo = query.data
-    query.answer()
-    try:
-        if tipo == 'DOMAIN':
-            refset = '_MISP_Event_IOC_DOMAIN'
-        elif tipo == 'IPDST':
-            refset = '_MISP_Event_IOC_DSTIP'
-        elif tipo == 'MD5':
-            refset = '_MISP_Event_IOC_MD5'
-        elif tipo == 'SHA256':
-            refset = '_MISP_Event_IOC_SHA256'
-        elif tipo == 'IPSRC':
-            refset = '_MISP_Event_IOC_SRCIP'
-        elif tipo == 'URL':
-            refset = '_MISP_Event_IOC_URLS'
-        else:
-            logger.error('el referenceSet no se pudo setear porque se cargo algun valor fuera de los IOCS permitidos')
-    except:
-        logger.error('No se pudo setear el refSet.. ')
-    logger.info('el tipo es '+tipo+', y el referenceSet es '+refset+' . Vamos al step FOUR. ' )
-    query.edit_message_text(text="Excelente , ahí los cargo ,esperame.. ")
-
-    logger.info('ejecutando el modulo de QRmisp para pushear IoCs a QRadar.' )
-    try:
-      number_of_iocs=load_iocs(tipo, refset, 40)
-    except:
-      logger.error('No se pudo ejecutar load_iocs del módulo QRmisp. ')
-    logger.info('La cant de IOCS son: '+number_of_iocs+' .' )
-    if str(number_of_iocs) == '0':
-      update.callback_query.message.reply_text('No se cargaron indicadores nuevos.')
+    logger.info('El tipo es  '+tipo+' , ahora vamos a setear el refset')
+    if tipo == 'DOMAIN':
+      refset = '_MISP_Event_IOC_DOMAIN'
+    elif tipo == 'IPDST':
+      refset = '_MISP_Event_IOC_DSTIP'
+    elif tipo == 'MD5':
+      refset = '_MISP_Event_IOC_MD5'
+    elif tipo == 'SHA256':
+      refset = '_MISP_Event_IOC_SHA256'
+    elif tipo == 'IPSRC':
+      refset = '_MISP_Event_IOC_SRCIP'
+    elif tipo == 'URL':
+      refset = '_MISP_Event_IOC_URLS'
     else:
-      update.callback_query.message.reply_text(text='confirmado, se cargaron : '+number_of_iocs+' nuevos en QRadar.')
+      logger.error('el referenceSet no se pudo setear porque se cargo algun valor fuera de los IOCS permitidos')
+    logger.info('el tipo es '+tipo+', y el referenceSet es '+refset+' . Vamos al step FOUR. ' )
+    
+
+    buttonSI = InlineKeyboardButton (text='SI',callback_data='SI')
+    buttonNO = InlineKeyboardButton (text='NO',callback_data='NO')
+    
+    reply_markup = InlineKeyboardMarkup([[buttonSI,buttonNO]])
+    update.callback_query.message.reply_text(text='el tipo elegido es:  '+tipo+' .\n Es correcto?.', reply_markup=reply_markup)
+    return FOUR
+
+def push_attributes(update: Update, _: CallbackContext) -> str:
+    logger.info('entrando a push attributes...' )
+    query=update.callback_query
+    global refset
+    global tipo
+    if query.data == 'SI':
+        try:
+            number_of_iocs=load_iocs(tipo, refset, 40)
+        except:
+            logger.error('No se pudo ejecutar load_iocs del módulo QRmisp. ')
+            logger.info('La cant de IOCS son: '+number_of_iocs+' .' )
+        #    query.
+    #       update.message.reply_text('Se pushearon '+number_of_iocs+' IOCS hacia Qradar. Gracias, interactuamos luego.')
+        if str(number_of_iocs) == '0':
+            update.callback_query.message.reply_text('No se cargaron indicadores nuevos.')
+        else:
+            update.callback_query.message.reply_text('confirmado, se cargaron : '+number_of_iocs+' nuevos en QR.')
+    else:
+        update.callback_query.message.reply_text('Se canceló la carga de IOCS.')
     return ConversationHandler.END
 
 if __name__ == '__main__':
