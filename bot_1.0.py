@@ -6,12 +6,6 @@ import requests
 import telegram
 from QRmisp import load_iocs
 
-#logging.basicConfig(
-#    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-#)
-
-#logger = logging.getLogger(__name__)
-
 # Stages
 FIRST, SECOND ,THIRD, FOUR, INPUT_TEXT_C= range(5)
 
@@ -244,11 +238,8 @@ def setear_referenceSet(update: Update, _: CallbackContext) -> str:
     else:
       logger.error('el referenceSet no se pudo setear porque se cargo algun valor fuera de los IOCS permitidos')
     logger.info('el tipo es '+tipo+', y el referenceSet es '+refset+' . Vamos al step FOUR. ' )
-    
-
     buttonSI = InlineKeyboardButton (text='SI',callback_data='SI')
     buttonNO = InlineKeyboardButton (text='NO',callback_data='NO')
-    
     reply_markup = InlineKeyboardMarkup([[buttonSI,buttonNO]])
     update.callback_query.message.reply_text(text='el tipo elegido es:  '+tipo+' .\n Es correcto?.', reply_markup=reply_markup)
     return FOUR
@@ -264,8 +255,6 @@ def push_attributes(update: Update, _: CallbackContext) -> str:
         except:
             logger.error('No se pudo ejecutar load_iocs del módulo QRmisp. ')
             logger.info('La cant de IOCS son: '+number_of_iocs+' .' )
-        #    query.
-    #       update.message.reply_text('Se pushearon '+number_of_iocs+' IOCS hacia Qradar. Gracias, interactuamos luego.')
         if str(number_of_iocs) == '0':
             update.callback_query.message.reply_text('No se cargaron indicadores nuevos.')
         else:
@@ -281,15 +270,15 @@ if __name__ == '__main__':
     
     # Llave API para conectarse a Telegram 
     updater = Updater(token="1574209632:AAGtNhRT0xKuMS7ie6m1qmYYMhA9ybpb1ss", use_context=True)
-
     dp = updater.dispatcher
 
     # Handler'sZZZ 
+    #Agregar handler para seleccionar tipo y categoria del IOC
     start_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
         states={
             FIRST: [
-                CallbackQueryHandler(url, pattern='^' + URL + '$'),  # Boton >> Callback_data >> url
+                CallbackQueryHandler(url, pattern='^' + URL + '$'), 
                 CallbackQueryHandler(ipsrc, pattern='^' + IPSRC + '$'),
                 CallbackQueryHandler(ipdst, pattern='^' + IPDST + '$'),
                 CallbackQueryHandler(domain, pattern='^' + DOMAIN + '$'),
@@ -306,8 +295,7 @@ if __name__ == '__main__':
         },
         fallbacks=[CommandHandler('start', start)],
     )
-    # Add ConversationHandlers to dispatcher that will be used for handling
-    # updates
+    # Agregar handler para agregar iocs.
     dp.add_handler(start_handler)
 
     dp.add_handler(ConversationHandler(
@@ -320,7 +308,7 @@ if __name__ == '__main__':
         },
         fallbacks=[CommandHandler('start', start)]
     ))
-    
+    #Agregar handler para pushear IOCS.
     push_handler = ConversationHandler(
         entry_points= [CommandHandler('push', start_push)],
         states={
