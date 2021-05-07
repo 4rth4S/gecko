@@ -22,7 +22,7 @@ text = ""
 tipo = ""
 categoria = ""
 refset = ""
-GRUPO = -423299441 #'-423299441'
+GRUPO = -123456789 # Your group ID as int like GRUPO = -413199331
 
 def start(update: Update, _: CallbackContext) -> str:
     user = update.message.from_user
@@ -266,8 +266,8 @@ if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
     logger = logging.getLogger('gecko_Bot')
     
-    # Llave API para conectarse a Telegram 
-    updater = Updater(token="1574209632:AAGtNhRT0xKuMS7ie6m1qmYYMhA9ybpb1ss", use_context=True)
+    # Llave API para conectarse a Telegram  (acá va el token del bot de tg propio)
+    updater = Updater(token="1111109632:AAGtNhRK0xZuMS7ie6m1qmYYMhA9ybpb1ss", use_context=True)
 
     dp = updater.dispatcher
 
