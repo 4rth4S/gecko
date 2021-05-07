@@ -22,7 +22,7 @@ text = ""
 tipo = ""
 categoria = ""
 refset = ""
-GRUPO = -423299441 #'-423299441'
+GRUPO = -123456789   #'-412399331'
 
 def start(update: Update, _: CallbackContext) -> str:
     user = update.message.from_user
@@ -280,7 +280,7 @@ if __name__ == '__main__':
     logger = logging.getLogger('gecko_Bot')
     
     # Llave API para conectarse a Telegram 
-    updater = Updater(token="1574209632:AAGtNhRT0xKuMS7ie6m1qmYYMhA9ybpb1ss", use_context=True)
+    updater = Updater(token="1574109532:AAgTNhRK0DKiMS7ei4n2qnYYMhA8yvdb2sz", use_context=True)
 
     dp = updater.dispatcher
 
