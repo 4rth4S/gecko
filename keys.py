@@ -1,10 +1,10 @@
 ## For TG Bot 
-misp_url = "https://192.168.32.65"
-misp_key = "l030qkovNgklQjSQ8Str4FMEbSBks3T6SDy9RGH0"
+misp_url = "https://your_MISP_url_or_IP"
+misp_key = "your_MISP_key"
 misp_verifycert = False
 
 ## For QRmisp_1.1
-misp_fqdn = "192.168.32.65"
+misp_fqdn = "your_MISP_IP_or_URL"
 misp_token = misp_key
-qradar_fqdn = "192.168.32.154"
-qradar_token = "1fc3ea23-5a86-4439-b867-481e582b1f37"
+qradar_fqdn = "your_Qradar_IP_or_URL"
+qradar_token = "your_Qradar_token"
