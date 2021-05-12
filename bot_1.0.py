@@ -16,7 +16,7 @@ text = ""
 tipo = ""
 categoria = ""
 refset = ""
-GRUPO = -423299441 #'-423299441'
+GRUPO = -123456789   #'-412399331'
 
 def start(update: Update, _: CallbackContext) -> str:
     if(update.message.chat.id!=GRUPO): return
