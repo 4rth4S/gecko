@@ -19,6 +19,7 @@ refset = ""
 GRUPO = -423299441 #'-423299441'
 
 def start(update: Update, _: CallbackContext) -> str:
+    if(update.message.chat.id!=GRUPO): return
     user = update.message.from_user
     logger.info("User %s started the conversation.", user.first_name)
     keyboard = [
@@ -34,8 +35,8 @@ def start(update: Update, _: CallbackContext) -> str:
     update.message.reply_text("..Elegí el tipo de IoC que vas a cargar..", reply_markup=reply_markup)
     return FIRST
 
-
-def updateIoc(update, context):  
+def updateIoc(update, context):
+    if(update.message.chat.id!=GRUPO): return
     global text  
     text = update.message.text 
     try:
@@ -63,12 +64,12 @@ def updateIoc(update, context):
         logger.error('Algo raro paso en la funcion updateIoc.. ')
 
 def confirmar_ioc_button(update,context):
+    if(update.message.chat.id!=GRUPO): return
     global text
     try:
         if(update.callback_query.data=='SI'):
-            # aca va ir la llamada al modulo de carga en MISP
+            #carga en MISP
             extract.extraer(text, categoria, tipo)
-            # aca va ir la llamada al modulo de carga en MISP
             update.callback_query.message.reply_text('confirmado, se cargaron!')
                 
         if(update.callback_query.data=='NO'):
@@ -80,6 +81,7 @@ def confirmar_ioc_button(update,context):
         logger.error('Algo raro paso en la funcion updateIoc.. ')
 
 def url(update: Update, _: CallbackContext) -> str:
+    if(update.message.chat.id!=GRUPO): return
     """Show new choice of buttons"""
     query = update.callback_query
     global tipo
@@ -98,6 +100,7 @@ def url(update: Update, _: CallbackContext) -> str:
     return SECOND
 
 def ipsrc(update: Update, _: CallbackContext) -> str:
+    if(update.message.chat.id!=GRUPO): return
     """Show new choice of buttons"""
     query = update.callback_query
     global tipo
@@ -116,6 +119,7 @@ def ipsrc(update: Update, _: CallbackContext) -> str:
     return SECOND
 
 def ipdst(update: Update, _: CallbackContext) -> str:
+    if(update.message.chat.id!=GRUPO): return
     """Show new choice of buttons"""
     query = update.callback_query
     global tipo
@@ -134,6 +138,7 @@ def ipdst(update: Update, _: CallbackContext) -> str:
     return SECOND
 
 def domain(update: Update, _: CallbackContext) -> str:
+    if(update.message.chat.id!=GRUPO): return
     """Show new choice of buttons"""
     query = update.callback_query
     global tipo
@@ -152,6 +157,7 @@ def domain(update: Update, _: CallbackContext) -> str:
     return SECOND
 
 def sha256(update: Update, _: CallbackContext) -> str:
+    if(update.message.chat.id!=GRUPO): return
     query = update.callback_query
     global tipo
     tipo = query.data
@@ -171,25 +177,27 @@ def sha256(update: Update, _: CallbackContext) -> str:
     return SECOND
 
 def md5(update: Update, _: CallbackContext) -> str:
-  query = update.callback_query
-  global tipo
-  tipo = query.data
-  query.answer()
-  keyboard = [
+    if(update.message.chat.id!=GRUPO): return
+    query = update.callback_query
+    global tipo
+    tipo = query.data
+    query.answer()
+    keyboard = [
       [
           InlineKeyboardButton('Payload delivery', callback_data='Payload delivery')],
           [InlineKeyboardButton('Artifacts dropped', callback_data='Artifacts dropped')],
           [InlineKeyboardButton('Payload installation', callback_data='Payload installation')],
           [InlineKeyboardButton('External analysis', callback_data='External analysis')
       ] 
-  ]
-  reply_markup = InlineKeyboardMarkup(keyboard)
-  query.edit_message_text(
-      text='..Bien, ahora elegí la categoría a la que aplica',reply_markup=reply_markup
-      )
-  return SECOND
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    query.edit_message_text(
+        text='..Bien, ahora elegí la categoría a la que aplica',reply_markup=reply_markup
+        )
+    return SECOND
 
 def definir_categoria(update,context):
+    if(update.message.chat.id!=GRUPO): return
     global categoria
     global tipo
     query = update.callback_query
@@ -201,6 +209,7 @@ def definir_categoria(update,context):
     return tipo, categoria
 
 def start_push(update: Update, _: CallbackContext) -> str:
+    if(update.message.chat.id!=GRUPO): return
     user = update.message.from_user
     logger.info("User %s started the conversation.", user.first_name)
     keyboard = [
@@ -216,8 +225,8 @@ def start_push(update: Update, _: CallbackContext) -> str:
     update.message.reply_text("..Elegí el tipo de IoC que queres pushear a QRadar..", reply_markup=reply_markup)
     return THIRD
 
-
 def setear_referenceSet(update: Update, _: CallbackContext) -> str:
+    if(update.message.chat.id!=GRUPO): return
     query = update.callback_query
     global tipo
     global refset
@@ -245,6 +254,7 @@ def setear_referenceSet(update: Update, _: CallbackContext) -> str:
     return FOUR
 
 def push_attributes(update: Update, _: CallbackContext) -> str:
+    if(update.message.chat.id!=GRUPO): return
     logger.info('entrando a push attributes...' )
     query=update.callback_query
     global refset
