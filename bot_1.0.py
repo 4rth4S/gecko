@@ -281,7 +281,7 @@ if __name__ == '__main__':
     logger = logging.getLogger('gecko_Bot')
     
     # Llave API para conectarse a Telegram  (acá va el token del bot de tg propio)
-    updater = Updater(token="1111109632:AAGtNhRK0xZuMS7ie6m1qmYYMhA9ybpb1ss", use_context=True)
+    updater = Updater(token="1111109123:ASDtmhRX2kZOMs7ia5m1qnYYMhA9ybpb2fd", use_context=True)
 
     dp = updater.dispatcher
 
